@@ -1,0 +1,10 @@
+my_name = input("Enter your name: ")
+ev_model = input("Enter your EV model: ")
+battery_percentage = input("Enter battery percentage: ")
+destination = input("Enter destination: ")
+
+print("\n----- EV Companion -----")
+print("Name:", my_name)
+print("EV Model:", ev_model)
+print("Battery:", battery_percentage, "%")
+print("Destination:", destination)

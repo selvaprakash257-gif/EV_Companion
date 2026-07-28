@@ -1,0 +1,26 @@
+
+Vehicle: tata
+Battery: 75%
+Destination: chennai
+-----------------------------
+Vehicle: tata nexon
+Battery: 75%
+Destination: chennai
+-----------------------------
+Vehicle: tata
+Battery: 75%
+Destination: chennai
+-----------------------------
+Vehicle: tata
+Battery: 75%
+Destination: chennai
+-----------------------------
+Vehicle: tata
+Battery: 75%
+Destination: chennai
+-----------------------------
+Name: selva
+Vehicle: tata
+Battery: 75%
+Destination: chennai
+-----------------------------
