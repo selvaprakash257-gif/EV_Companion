@@ -1,9 +1,4 @@
+from database import view_trip_database
+
 def view_trip():
-
-    file = open("trip_history.txt", "r")
-
-    data = file.read()
-
-    print(data)
-
-    file.close()
+    view_trip_database()

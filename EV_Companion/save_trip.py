@@ -1,3 +1,4 @@
+from database import save_trip_to_database
 from user import User
 
 def save_trip():
@@ -10,6 +11,11 @@ def save_trip():
     user1 = User(name, vehicle, battery, destination)
     user1.display_details()
 
-    user1.save_to_file()
+    save_trip_to_database(
+    user1.name,
+    user1.vehicle,
+    user1.battery,
+    user1.destination
+)
 
     print("Trip saved successfully!")
