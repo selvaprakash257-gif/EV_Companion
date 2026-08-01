@@ -139,3 +139,19 @@ def register_user(username, password):
     connection.close()
 
     print("User Registered Successfully!")
+def login_user(username, password):
+
+    connection = sqlite3.connect("ev_companion.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE username = ? AND password = ?",
+        (username, password)
+    )
+
+    user = cursor.fetchone()
+
+    connection.close()
+
+    return user
