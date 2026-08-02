@@ -8,7 +8,8 @@ from view_trip import view_trip
 from save_trip import save_trip
 
 
-def ev_menu():
+def ev_menu(logged_user):
+    print(f"Welcome {logged_user[1]}!")
 
     while True:
         print("\n========== EV Companion ==========")
@@ -23,7 +24,7 @@ def ev_menu():
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            save_trip()
+             save_trip(logged_user)
 
         elif choice == "2":
             view_trip()
@@ -61,8 +62,11 @@ while True:
         register()
 
     elif choice == "2":
-        if login():
-            ev_menu()
+
+        logged_user = login()
+
+        if logged_user:
+            ev_menu(logged_user)
 
     elif choice == "3":
         print("Goodbye!")

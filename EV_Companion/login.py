@@ -9,7 +9,7 @@ def login():
 
     if user:
         print("Login Successful!")
-        return True
+        return user
     else:
         print("Invalid Username or Password!")
-        return False
+        return None

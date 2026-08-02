@@ -1,21 +1,18 @@
 from database import save_trip_to_database
-from user import User
 
-def save_trip():
+def save_trip(logged_user):
 
-    name = input("Enter Your Name: ")
+    user_id = logged_user[0]
+
     vehicle = input("Enter Vehicle Model: ")
     battery = input("Enter Battery Percentage: ")
     destination = input("Enter Destination: ")
 
-    user1 = User(name, vehicle, battery, destination)
-    user1.display_details()
-
     save_trip_to_database(
-    user1.name,
-    user1.vehicle,
-    user1.battery,
-    user1.destination
-)
+        user_id,
+        vehicle,
+        battery,
+        destination
+    )
 
     print("Trip saved successfully!")

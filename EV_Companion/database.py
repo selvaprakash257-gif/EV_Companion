@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def save_trip_to_database(name, vehicle, battery, destination):
+def save_trip_to_database(user_id, vehicle, battery, destination):
 
     connection = sqlite3.connect("ev_companion.db")
 
@@ -10,7 +10,7 @@ def save_trip_to_database(name, vehicle, battery, destination):
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS trips(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
+        user_id INTEGER,
         vehicle TEXT,
         battery INTEGER,
         destination TEXT
@@ -18,9 +18,9 @@ def save_trip_to_database(name, vehicle, battery, destination):
     """)
 
     cursor.execute("""
-    INSERT INTO trips(name, vehicle, battery, destination)
+    INSERT INTO trips(user_id, vehicle, battery, destination)
     VALUES(?, ?, ?, ?)
-    """, (name, vehicle, battery, destination))
+    """, (user_id, vehicle, battery, destination))
 
     connection.commit()
 
@@ -42,7 +42,7 @@ def view_trip_database():
     for trip in trips:
         print("----------------------------")
         print("ID:", trip[0])
-        print("Name:", trip[1])
+        print("User ID:", trip[1])
         print("Vehicle:", trip[2])
         print("Battery:", trip[3])
         print("Destination:", trip[4])
@@ -155,3 +155,4 @@ def login_user(username, password):
     connection.close()
 
     return user
+create_users_table()
