@@ -27,19 +27,19 @@ def ev_menu(logged_user):
              save_trip(logged_user)
 
         elif choice == "2":
-            view_trip()
+            view_trip(logged_user)
 
         elif choice == "3":
             charging_cost()
 
         elif choice == "4":
-            delete_trip_menu()
+            delete_trip_menu(logged_user)
 
         elif choice == "5":
-            update_trip()
+            update_trip(logged_user)
 
         elif choice == "6":
-            search_trip_menu()
+            search_trip_menu(logged_user)
 
         elif choice == "7":
             print("Logged out successfully!")

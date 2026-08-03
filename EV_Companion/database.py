@@ -29,13 +29,16 @@ def save_trip_to_database(user_id, vehicle, battery, destination):
     print("Trip saved in Database!")
 
 
-def view_trip_database():
+def view_trip_database(user_id):
 
     connection = sqlite3.connect("ev_companion.db")
 
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM trips")
+    cursor.execute(
+    "SELECT * FROM trips WHERE user_id = ?",
+    (user_id,)
+)
 
     trips = cursor.fetchall()
 
@@ -50,28 +53,47 @@ def view_trip_database():
     connection.close()
 
 
-def delete_trip(id):
-
-    connection = sqlite3.connect("ev_companion.db")
-
-    cursor = connection.cursor()
-
-    cursor.execute("DELETE FROM trips WHERE id = ?", (id,))
-
-    connection.commit()
-
-    connection.close()
-
-    print("Trip Deleted Successfully!")
-def update_battery(id, battery):
+def delete_trip(id, user_id):
 
     connection = sqlite3.connect("ev_companion.db")
 
     cursor = connection.cursor()
 
     cursor.execute(
-        "UPDATE trips SET battery = ? WHERE id = ?",
-        (battery, id)
+    "DELETE FROM trips WHERE id = ? AND user_id = ?",
+    (id, user_id)
+)
+
+    connection.commit()
+
+    connection.close()
+
+    print("Trip Deleted Successfully!")
+def check_trip_owner(id, user_id):
+
+    connection = sqlite3.connect("ev_companion.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM trips WHERE id = ? AND user_id = ?",
+        (id, user_id)
+    )
+
+    trip = cursor.fetchone()
+
+    connection.close()
+
+    return trip
+def update_battery(id, battery, user_id):
+
+    connection = sqlite3.connect("ev_companion.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+    "UPDATE trips SET battery = ? WHERE id = ? AND user_id = ?",
+    (battery, id, user_id)
     )
 
     connection.commit()
@@ -79,15 +101,16 @@ def update_battery(id, battery):
     connection.close()
 
     print("Battery Updated Successfully!")
-def search_trip(destination):
+def search_trip(user_id, destination):
 
     connection = sqlite3.connect("ev_companion.db")
 
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT * FROM trips WHERE destination = ?",
-        (destination,)
+    "SELECT * FROM trips WHERE user_id = ? AND destination = ?",
+    (user_id, destination)
+
     )
 
     trips = cursor.fetchall()
