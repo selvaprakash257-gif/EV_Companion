@@ -1,3 +1,4 @@
+from dashboard import dashboard
 from register import register
 from login import login
 from search_trip import search_trip_menu
@@ -9,7 +10,6 @@ from save_trip import save_trip
 
 
 def ev_menu(logged_user):
-    print(f"Welcome {logged_user[1]}!")
 
     while True:
         print("\n========== EV Companion ==========")
@@ -27,7 +27,12 @@ def ev_menu(logged_user):
              save_trip(logged_user)
 
         elif choice == "2":
-            view_trip(logged_user)
+
+            logged_user = login()
+
+            if logged_user:
+                dashboard(logged_user)
+                ev_menu(logged_user)
 
         elif choice == "3":
             charging_cost()
@@ -62,10 +67,10 @@ while True:
         register()
 
     elif choice == "2":
-
         logged_user = login()
 
         if logged_user:
+            dashboard(logged_user)
             ev_menu(logged_user)
 
     elif choice == "3":

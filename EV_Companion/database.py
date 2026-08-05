@@ -178,4 +178,49 @@ def login_user(username, password):
     connection.close()
 
     return user
-create_users_table()
+def get_total_trips(user_id):
+
+    connection = sqlite3.connect("ev_companion.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM trips WHERE user_id = ?",
+        (user_id,)
+    )
+
+    total = cursor.fetchone()[0]
+
+    connection.close()
+
+    return total
+def get_average_battery(user_id):
+    connection = sqlite3.connect("ev_companion.db")
+    
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT AVG(battery)FROM trips WHERE user_id = ?",
+        (user_id,)
+    )
+
+    average = cursor.fetchone()[0]
+    
+    connection.close()
+    
+    return average
+def get_last_destination(user_id):
+    connection = sqlite3.connect("ev_companion.db")
+        
+    cursor = connection.cursor()
+    cursor.execute(
+            """SELECT destination 
+            FROM trips 
+            WHERE user_id = ? 
+            ORDER BY id DESC 
+            LIMIT 1""",
+            (user_id,)
+    )
+    destination = cursor.fetchone()[0]
+        
+    connection.close()
+    return destination 
