@@ -137,15 +137,34 @@ def create_users_table():
     CREATE TABLE IF NOT EXISTS users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
-        password TEXT
-    )
-    """)
+        password TEXT,
+        vehicle TEXT,
+        variant TEXT,
+        driving_style TEXT,
+        ac_preference TEXT
+         )
+        """)
 
     connection.commit()
 
     connection.close()
 
     print("Users table created!")
+def add_profile_columns():
+
+    connection = sqlite3.connect("ev_companion.db")
+    cursor = connection.cursor()
+
+    cursor.execute("ALTER TABLE users ADD COLUMN vehicle TEXT")
+    cursor.execute("ALTER TABLE users ADD COLUMN variant TEXT")
+    cursor.execute("ALTER TABLE users ADD COLUMN driving_style TEXT")
+    cursor.execute("ALTER TABLE users ADD COLUMN ac_preference TEXT")
+
+    connection.commit()
+    connection.close()
+
+    print("Profile columns added successfully!")
+
 def register_user(username, password):
 
     connection = sqlite3.connect("ev_companion.db")
@@ -204,9 +223,12 @@ def get_average_battery(user_id):
     )
 
     average = cursor.fetchone()[0]
-    
+
     connection.close()
-    
+
+    if average is None:
+        return 0
+
     return average
 def get_last_destination(user_id):
     connection = sqlite3.connect("ev_companion.db")
@@ -220,7 +242,45 @@ def get_last_destination(user_id):
             LIMIT 1""",
             (user_id,)
     )
-    destination = cursor.fetchone()[0]
-        
+    result = cursor.fetchone()
+
     connection.close()
-    return destination 
+
+    if result is None:
+        return "No Trips"
+
+    return result[0]
+def update_user_profile(user_id, vehicle, variant, driving_style, ac_preference):
+
+    connection = sqlite3.connect("ev_companion.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    UPDATE users
+    SET vehicle = ?,
+        variant = ?,
+        driving_style = ?,
+        ac_preference = ?
+    WHERE id = ?
+    """, (vehicle, variant, driving_style, ac_preference, user_id))
+
+    connection.commit()
+    connection.close()
+
+    print("Profile Saved Successfully!")
+def get_user_profile(user_id):
+
+    connection = sqlite3.connect("ev_companion.db")
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    SELECT vehicle, variant, driving_style, ac_preference
+    FROM users
+    WHERE id = ?
+    """, (user_id,))
+
+    profile = cursor.fetchone()
+
+    connection.close()
+
+    return profile

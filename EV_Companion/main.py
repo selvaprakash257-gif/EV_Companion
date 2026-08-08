@@ -1,3 +1,5 @@
+from database import get_user_profile
+from setup_profile import setup_profile
 from dashboard import dashboard
 from register import register
 from login import login
@@ -31,6 +33,12 @@ def ev_menu(logged_user):
             logged_user = login()
 
             if logged_user:
+
+                profile = get_user_profile(logged_user[0])
+
+                if profile[0] is None:
+                    setup_profile(logged_user)
+
                 dashboard(logged_user)
                 ev_menu(logged_user)
 
@@ -67,9 +75,16 @@ while True:
         register()
 
     elif choice == "2":
+
         logged_user = login()
 
         if logged_user:
+
+            profile = get_user_profile(logged_user[0])
+
+            if profile[0] is None:
+                setup_profile(logged_user)
+
             dashboard(logged_user)
             ev_menu(logged_user)
 
