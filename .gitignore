@@ -1,0 +1,3 @@
+ev_companion.db
+*.pyc
+__pycache__/
