@@ -44,7 +44,17 @@ def charging_cost(logged_user):
     target_battery = float(
         input("Enter Target Battery Percentage: ")
     )
+    if current_battery < 0 or current_battery > 100:
+        print("Invalid current battery percentage!")
+        return
 
+    if target_battery < 0 or target_battery > 100:
+        print("Invalid target battery percentage!")
+        return
+
+    if target_battery <= current_battery:
+        print("Target battery must be greater than current battery!")
+        return
     price_per_unit = float(
         input("Enter Price Per Unit (₹): ")
     )
