@@ -98,13 +98,15 @@ def battery_prediction(logged_user):
         print("Remaining Range:", round(remaining_range, 1), "km")
 
     else:
-        required_battery = (trip_distance / estimated_range) * battery
-        additional_battery = required_battery - battery
+        additional_range = trip_distance - estimated_range
+        charging_segments = int(trip_distance / estimated_range) + 1
+        charging_stops = charging_segments - 1
 
         print("\nBattery may not be sufficient.")
-        print("Required Battery:", round(required_battery, 1), "%")
-        print("Additional Battery Needed:", round(additional_battery, 1), "%")
-        charge_needed = round(additional_battery)
+        print("Estimated Range:", round(estimated_range, 1), "km")
+        print("Trip Distance:", round(trip_distance, 1), "km")
+        print("Additional Range Needed:", round(additional_range, 1), "km")
 
         print("\n🔋 Recommendation:")
-        print("Charge at least", charge_needed, "% before starting the trip.")
+        print("Charging is required during the journey.")
+        print("Approximate Charging Stops:", charging_stops)
