@@ -87,3 +87,14 @@ def battery_prediction(logged_user):
     )
 
     print("\nEstimated Range:", round(estimated_range, 1), "km")
+
+    trip_distance = float(input("Enter Trip Distance (km): "))
+
+    remaining_range = estimated_range - trip_distance
+
+    if remaining_range >= 0:
+        print("\nYou can reach your destination!")
+        print("Remaining Range:", round(remaining_range, 1), "km")
+    else:
+        print("\nBattery may not be sufficient.")
+        print("Additional Range Needed:", round(abs(remaining_range), 1), "km")
