@@ -103,3 +103,7 @@ def battery_prediction(logged_user):
         print("\nBattery may not be sufficient.")
         print("Required Battery:", round(required_battery, 1), "%")
         print("Additional Battery Needed:", round(additional_battery, 1), "%")
+        charge_needed = round(additional_battery)
+
+        print("\n🔋 Recommendation:")
+        print("Charge at least", charge_needed, "% before starting the trip.")
