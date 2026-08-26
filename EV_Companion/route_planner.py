@@ -82,5 +82,4 @@ def route_planner():
     if distance is not None:
         print("Road Distance:", round(distance, 1), "km")
 
-
-route_planner()
+    return distance
