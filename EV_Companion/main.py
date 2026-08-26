@@ -33,10 +33,10 @@ def ev_menu(logged_user):
             view_trip(logged_user)
 
         elif choice == "3":
-            battery_prediction(logged_user)
+            charging_cost(logged_user)
 
         elif choice == "4":
-            charging_cost()
+            charging_cost(logged_user)
 
         elif choice == "5":
             delete_trip_menu(logged_user)
