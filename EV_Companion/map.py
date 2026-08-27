@@ -2,6 +2,7 @@ import os
 import requests
 import folium
 from dotenv import load_dotenv
+from charging_stations import get_stations_along_route
 
 load_dotenv()
 
@@ -29,6 +30,7 @@ def create_map(start, destination):
 
     start_coordinates = tamil_nadu_places[start]
     destination_coordinates = tamil_nadu_places[destination]
+    
 
     url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson"
 
@@ -62,6 +64,9 @@ def create_map(start, destination):
     )
 
     route_coordinates = result["features"][0]["geometry"]["coordinates"]
+    stations = get_stations_along_route(route_coordinates)
+
+    print("Charging Stations Found:", len(stations))
 
     route_for_map = [
         [coordinate[1], coordinate[0]]
@@ -94,6 +99,27 @@ def create_map(start, destination):
         route_for_map,
         tooltip=f"Road Distance: {distance:.1f} km"
     ).add_to(ev_map)
+    for station in stations:
+
+        address_info = station.get("AddressInfo", {})
+
+    station_name = address_info.get("Title", "EV Charging Station")
+    latitude = address_info.get("Latitude")
+    longitude = address_info.get("Longitude")
+    address = address_info.get("AddressLine1", "Address not available")
+
+    if latitude is not None and longitude is not None:
+
+        folium.Marker(
+    [latitude, longitude],
+    popup=f"{station_name}<br>{address}",
+    tooltip="⚡ EV Charging Station",
+    icon=folium.Icon(
+        color="green",
+        icon="flash",
+        prefix="glyphicon"
+    )
+).add_to(ev_map)
 
     file_path = os.path.join(
         os.path.dirname(__file__),
@@ -107,4 +133,4 @@ def create_map(start, destination):
     print("Destination:", destination)
     print("Road Distance:", round(distance, 1), "km")
 
-    return distance
+    return distance, stations, route_coordinates
