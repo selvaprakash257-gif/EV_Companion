@@ -1,4 +1,5 @@
 from route_planner import route_planner
+from map import create_map
 vehicles = {
     "Tata Nexon EV": {
         "30 kWh": {
@@ -90,6 +91,7 @@ def battery_prediction(logged_user):
     print("\nEstimated Range:", round(estimated_range, 1), "km")
 
     start, destination, trip_distance = route_planner()
+    create_map(start, destination)
 
     remaining_range = estimated_range - trip_distance
 

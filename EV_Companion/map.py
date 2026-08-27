@@ -7,43 +7,59 @@ load_dotenv()
 
 ORS_API_KEY = os.getenv("ORS_API_KEY")
 
-start = "Chennai"
-destination = "Vellore"
-
-places = {
+tamil_nadu_places = {
     "Chennai": (13.0827, 80.2707),
-    "Vellore": (12.9165, 79.1325)
+    "Coimbatore": (11.0168, 76.9558),
+    "Madurai": (9.9252, 78.1198),
+    "Trichy": (10.7905, 78.7047),
+    "Salem": (11.6643, 78.1460),
+    "Tirunelveli": (8.7139, 77.7567),
+    "Thanjavur": (10.7870, 79.1378),
+    "Erode": (11.3410, 77.7172),
+    "Tiruppur": (11.1085, 77.3411),
+    "Vellore": (12.9165, 79.1325),
+    "Kanchipuram": (12.8342, 79.7036),
+    "Dindigul": (10.3673, 77.9803),
+    "Thoothukudi": (8.7642, 78.1348),
+    "Pondicherry": (11.9416, 79.8083)
 }
 
-start_coordinates = places[start]
-destination_coordinates = places[destination]
 
-url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson"
+def create_map(start, destination):
 
-headers = {
-    "Authorization": ORS_API_KEY,
-    "Content-Type": "application/json"
-}
+    start_coordinates = tamil_nadu_places[start]
+    destination_coordinates = tamil_nadu_places[destination]
 
-data = {
-    "coordinates": [
-        [start_coordinates[1], start_coordinates[0]],
-        [destination_coordinates[1], destination_coordinates[0]]
-    ]
-}
+    url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson"
 
-response = requests.post(
-    url,
-    json=data,
-    headers=headers
-)
+    headers = {
+        "Authorization": ORS_API_KEY,
+        "Content-Type": "application/json"
+    }
 
-if response.status_code != 200:
-    print("API Error:", response.text)
-else:
+    data = {
+        "coordinates": [
+            [start_coordinates[1], start_coordinates[0]],
+            [destination_coordinates[1], destination_coordinates[0]]
+        ]
+    }
+
+    response = requests.post(
+        url,
+        json=data,
+        headers=headers
+    )
+
+    if response.status_code != 200:
+        print("Map API Error:", response.text)
+        return
+
     result = response.json()
 
-    distance = result["features"][0]["properties"]["summary"]["distance"] / 1000
+    distance = (
+        result["features"][0]["properties"]["summary"]["distance"]
+        / 1000
+    )
 
     route_coordinates = result["features"][0]["geometry"]["coordinates"]
 
@@ -64,14 +80,14 @@ else:
 
     folium.Marker(
         start_coordinates,
-        popup="Starting Location: Chennai",
-        tooltip="Chennai"
+        popup=f"Starting Location: {start}",
+        tooltip=start
     ).add_to(ev_map)
 
     folium.Marker(
         destination_coordinates,
-        popup="Destination: Vellore",
-        tooltip="Vellore"
+        popup=f"Destination: {destination}",
+        tooltip=destination
     ).add_to(ev_map)
 
     folium.PolyLine(
@@ -90,3 +106,5 @@ else:
     print("Starting Location:", start)
     print("Destination:", destination)
     print("Road Distance:", round(distance, 1), "km")
+
+    return distance
