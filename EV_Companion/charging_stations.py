@@ -33,20 +33,26 @@ def get_stations_along_route(route_coordinates):
 
     all_stations = []
 
-    route_points = route_coordinates[::max(1, len(route_coordinates) // 10)]
+    route_points = route_coordinates[
+        ::max(1, len(route_coordinates) // 10)
+    ]
 
     for i, coordinate in enumerate(route_points, start=1):
 
-        print(f"Searching charging stations: {i}/{len(route_points)}")
+        print(
+            f"Searching charging stations: "
+            f"{i}/{len(route_points)}"
+        )
 
-    longitude = coordinate[0]
-    latitude = coordinate[1]
+        longitude = coordinate[0]
+        latitude = coordinate[1]
 
-    stations = get_charging_stations(
-        latitude,
-        longitude
-    )
-    all_stations.extend(stations)
+        stations = get_charging_stations(
+            latitude,
+            longitude
+        )
+
+        all_stations.extend(stations)
 
     # Remove duplicate stations
     unique_stations = {}
@@ -59,11 +65,11 @@ def get_stations_along_route(route_coordinates):
         latitude = address_info.get("Latitude")
         longitude = address_info.get("Longitude")
 
-    if (
-        station_id is not None
-        and latitude is not None
-        and longitude is not None
-    ):
-        unique_stations[station_id] = station
+        if (
+            station_id is not None
+            and latitude is not None
+            and longitude is not None
+        ):
+            unique_stations[station_id] = station
 
     return list(unique_stations.values())
